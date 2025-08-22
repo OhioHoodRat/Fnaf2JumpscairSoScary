@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jumpscare</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+    }
+    #scare {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* fit GIF without cropping */
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <img id="scare" src="Fnaf2Jumpscare.gif" alt="jumpscare">
+  <audio id="sound" src="Fnaf2Jumpscare.wav" preload="auto"></audio>
+
+  <script>
+    const img = document.getElementById("scare");
+    const audio = document.getElementById("sound");
+    let triggered = false;
+
+    const gifDuration = 0.84 * 1000; // GIF length in milliseconds
+
+    document.body.addEventListener("keydown", (e) => {
+      if (!triggered && e.code === "Space") {
+        triggered = true;
+
+        // Show GIF
+        img.style.display = "block";
+        void img.offsetWidth; // restart GIF from first frame
+
+        // Play audio
+        audio.currentTime = 0;
+        audio.play().catch(err => console.error("Audio playback failed:", err));
+
+        // Stop audio after GIF duration
+        setTimeout(() => {
+          audio.pause();
+        }, gifDuration);
+      }
+    });
+  </script>
+</body>
+</html>
